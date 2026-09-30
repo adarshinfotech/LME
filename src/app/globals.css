@@ -1,0 +1,236 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   LMI design tokens
+   Warm beige + ink. No gradients, no neon. Contrast-checked pairs:
+   ink/sand 16.9:1 · muted/sand 4.8:1 · sand/ink 16.9:1 · stone/ink 7.4:1
+------------------------------------------------------------------- */
+@theme {
+  --color-sand: #f4ebdd;
+  --color-linen: #ede3d4;
+  --color-ink: #111111;
+  --color-carbon: #181818;
+  --color-muted: #6e675e;
+  --color-stone: #a8a094; /* muted text on dark surfaces */
+  --color-line: #d9cdbb; /* hairlines on sand */
+  --color-line-dark: #2c2a27; /* hairlines on ink */
+  --color-danger: #9b2c1f;
+  --color-success: #2f5d3a;
+  --color-white: #ffffff;
+
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display-face), var(--font-body), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-lux: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --text-display-xl: clamp(3.1rem, 0.9rem + 7vw, 7.5rem);
+  --text-display-xl--line-height: 0.92;
+  --text-display-xl--letter-spacing: -0.04em;
+  --text-display-lg: clamp(2.5rem, 1.25rem + 5vw, 6.5rem);
+  --text-display-lg--line-height: 0.96;
+  --text-display-lg--letter-spacing: -0.035em;
+  --text-display-md: clamp(2rem, 1.2rem + 3.2vw, 4.25rem);
+  --text-display-md--line-height: 1.02;
+  --text-display-md--letter-spacing: -0.03em;
+  --text-display-sm: clamp(1.5rem, 1.1rem + 1.6vw, 2.5rem);
+  --text-display-sm--line-height: 1.1;
+  --text-display-sm--letter-spacing: -0.02em;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --nav-h: 4.5rem;
+  }
+
+  html {
+    overflow-x: clip;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    scroll-padding-top: calc(var(--nav-h) + 1rem);
+  }
+
+  body {
+    background: var(--color-sand);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--color-ink);
+    color: var(--color-sand);
+  }
+
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  input,
+  textarea,
+  select,
+  button {
+    font: inherit;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+}
+
+@layer components {
+  .eyebrow {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  .container-lux {
+    width: 100%;
+    max-width: 88rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 640px) {
+    .container-lux {
+      padding-inline: 2rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .container-lux {
+      padding-inline: 3rem;
+    }
+  }
+
+  .section-y {
+    padding-block: 6rem;
+  }
+  @media (min-width: 1024px) {
+    .section-y {
+      padding-block: 9rem;
+    }
+  }
+
+  /* Native horizontal rail used on touch devices / reduced motion */
+  .rail {
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .rail::-webkit-scrollbar {
+    display: none;
+  }
+  .rail > * {
+    scroll-snap-align: start;
+  }
+
+  /* Range input (revenue slider) */
+  .lux-range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 2.75rem;
+    background: transparent;
+    cursor: pointer;
+    touch-action: pan-y;
+  }
+  .lux-range:focus-visible {
+    outline: none;
+  }
+  .lux-range::-webkit-slider-runnable-track {
+    height: 2px;
+    background: linear-gradient(to right, var(--color-sand) 0, var(--color-sand) var(--fill, 0%), var(--color-line-dark) var(--fill, 0%));
+  }
+  .lux-range::-moz-range-track {
+    height: 2px;
+    background: var(--color-line-dark);
+  }
+  .lux-range::-moz-range-progress {
+    height: 2px;
+    background: var(--color-sand);
+  }
+  .lux-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-top: calc(-0.875rem + 1px);
+    border-radius: 999px;
+    background: var(--color-sand);
+    border: 6px solid var(--color-ink);
+    box-shadow: 0 0 0 1px var(--color-sand);
+    transition: transform 0.3s var(--ease-lux);
+  }
+  .lux-range::-moz-range-thumb {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 999px;
+    background: var(--color-sand);
+    border: 6px solid var(--color-ink);
+    box-shadow: 0 0 0 1px var(--color-sand);
+  }
+  .lux-range:active::-webkit-slider-thumb,
+  .lux-range:focus-visible::-webkit-slider-thumb {
+    transform: scale(1.15);
+  }
+  .lux-range:focus-visible::-webkit-slider-thumb {
+    box-shadow:
+      0 0 0 1px var(--color-sand),
+      0 0 0 5px color-mix(in srgb, var(--color-sand) 35%, transparent);
+  }
+}
+
+/* On-load reveals run in CSS so they start on first paint, not after hydration. */
+@keyframes lux-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes lux-word {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes lux-draw-y {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+.animate-rise {
+  animation: lux-rise 1s var(--ease-lux) both;
+}
+.animate-word {
+  animation: lux-word 1s var(--ease-lux) both;
+}
+.animate-draw-y {
+  transform-origin: top;
+  animation: lux-draw-y 1.6s var(--ease-lux) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
