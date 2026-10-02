@@ -2,17 +2,17 @@
 
 /* ------------------------------------------------------------------
    LMI design tokens
-   Warm beige + ink. No gradients, no neon. Contrast-checked pairs:
-   ink/sand 16.9:1 · muted/sand 4.8:1 · sand/ink 16.9:1 · stone/ink 7.4:1
+   Warm white + ink. No gradients, no neon. Contrast-checked pairs:
+   ink/sand 17.8:1 · muted/sand 5.3:1 · muted/linen 4.8:1 · stone/ink 7.3:1
 ------------------------------------------------------------------- */
 @theme {
-  --color-sand: #f4ebdd;
-  --color-linen: #ede3d4;
+  --color-sand: #faf8f4; /* warm white */
+  --color-linen: #f1ede6;
   --color-ink: #111111;
   --color-carbon: #181818;
   --color-muted: #6e675e;
   --color-stone: #a8a094; /* muted text on dark surfaces */
-  --color-line: #d9cdbb; /* hairlines on sand */
+  --color-line: #e3ddd3; /* hairlines on sand */
   --color-line-dark: #2c2a27; /* hairlines on ink */
   --color-danger: #9b2c1f;
   --color-success: #2f5d3a;

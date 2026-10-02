@@ -3,7 +3,7 @@
 export default function GlobalError({ reset }: { error: Error; reset: () => void }) {
   return (
     <html lang="en-IN">
-      <body style={{ margin: 0, background: "#F4EBDD", color: "#111111", fontFamily: "system-ui, sans-serif" }}>
+      <body style={{ margin: 0, background: "#FAF8F4", color: "#111111", fontFamily: "system-ui, sans-serif" }}>
         <main
           style={{
             minHeight: "100dvh",
@@ -26,7 +26,7 @@ export default function GlobalError({ reset }: { error: Error; reset: () => void
               width: "fit-content",
               padding: "0 2rem",
               background: "#111111",
-              color: "#F4EBDD",
+              color: "#FAF8F4",
               border: 0,
               letterSpacing: "0.16em",
               textTransform: "uppercase",
