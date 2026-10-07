@@ -28,6 +28,8 @@ export interface AdminStore {
   assign(id: string, staffId: string | null): Promise<void>;
   saveInternalNotes(id: string, notes: string): Promise<void>;
   addNote(id: string, body: string): Promise<void>;
+  /** Permanently removes an application and its activity. Admins only. */
+  deleteApplication(id: string): Promise<void>;
   /** Funnel for the trailing `days` days. */
   funnel(days: number): Promise<Funnel>;
 }

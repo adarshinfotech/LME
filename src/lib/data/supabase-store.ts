@@ -210,6 +210,13 @@ export function supabaseAdminStore(db: SupabaseClient, staffId: string): AdminSt
       if (error) fail("add note", error);
     },
 
+    async deleteApplication(id) {
+      // RLS silently filters rows a non-admin may not delete, so confirm a row was actually removed.
+      const { data, error } = await db.from("partner_applications").delete().eq("id", id).select("id");
+      if (error) fail("delete application", error);
+      if (!data?.length) fail("delete application (no row deleted)", null);
+    },
+
     async funnel(days) {
       const since = new Date(Date.now() - days * 86_400_000);
       const { data, error } = await db.rpc("partner_funnel", { since: since.toISOString() });

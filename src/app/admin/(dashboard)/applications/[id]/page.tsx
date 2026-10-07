@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ActivityTimeline } from "@/components/admin/ActivityTimeline";
 import { AccessDenied } from "@/components/admin/AdminShell";
-import { AssignControl, InternalNotes, NoteComposer, StatusControl } from "@/components/admin/ApplicationControls";
+import { AssignControl, DeleteApplication, InternalNotes, NoteComposer, StatusControl } from "@/components/admin/ApplicationControls";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { requireStaff } from "@/lib/auth";
 import {
@@ -116,6 +116,7 @@ export default async function ApplicationPage({ params }: PageProps<"/admin/appl
               </h2>
               <ActivityTimeline items={activity} />
             </section>
+            {ctx.staff.role === "admin" ? <DeleteApplication id={app.id} applicationNumber={app.applicationNumber} /> : null}
           </div>
         </aside>
       </div>

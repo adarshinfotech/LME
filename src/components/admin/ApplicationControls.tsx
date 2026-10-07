@@ -1,7 +1,14 @@
 "use client";
 
 import { useActionState, useRef, useState } from "react";
-import { addNoteAction, assignAction, saveNotesAction, updateStatusAction, type ActionResult } from "@/app/admin/actions";
+import {
+  addNoteAction,
+  assignAction,
+  deleteApplicationAction,
+  saveNotesAction,
+  updateStatusAction,
+  type ActionResult,
+} from "@/app/admin/actions";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { STATUSES, STATUS_LABELS, type ApplicationStatus } from "@/lib/applications/status";
@@ -149,6 +156,53 @@ export function InternalNotes({ id, notes }: { id: string; notes: string | null 
           </button>
         </div>
       </form>
+    </section>
+  );
+}
+
+export function DeleteApplication({ id, applicationNumber }: { id: string; applicationNumber: string }) {
+  const [state, action, pending] = useActionState<ActionResult, FormData>(deleteApplicationAction, null);
+  const [confirming, setConfirming] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+  useActionToast(state);
+  return (
+    <section className="border-t border-line p-5 sm:p-6">
+      <form ref={formRef} action={action}>
+        <input type="hidden" name="id" value={id} />
+        <button
+          type="button"
+          disabled={pending}
+          onClick={() => setConfirming(true)}
+          className="h-9 border border-danger/60 px-4 text-xs uppercase tracking-[0.14em] text-danger transition-colors hover:bg-danger hover:text-sand disabled:opacity-40"
+        >
+          {pending ? "Deleting…" : "Delete application"}
+        </button>
+      </form>
+      <Modal
+        open={confirming}
+        title={`Delete ${applicationNumber}?`}
+        onClose={() => setConfirming(false)}
+        actions={
+          <>
+            <Button variant="outline" onClick={() => setConfirming(false)}>
+              Cancel
+            </Button>
+            <button
+              type="button"
+              onClick={() => {
+                setConfirming(false);
+                formRef.current?.requestSubmit();
+              }}
+              className="h-12 bg-danger px-6 text-[0.72rem] font-medium uppercase tracking-[0.16em] text-sand transition-colors hover:bg-danger/85"
+            >
+              Delete permanently
+            </button>
+          </>
+        }
+      >
+        This permanently removes the application, its notes and its activity timeline. This cannot be undone — to keep a record, set the status to
+        Rejected instead.
+      </Modal>
     </section>
   );
 }

@@ -4,7 +4,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { STATUSES, type ApplicationStatus } from "@/lib/applications/status";
 import type { ActivityRecord, ApplicationRecord, StaffMember } from "@/lib/applications/types";
-import { PAGE_SIZE, type AdminStore, type PublicStore } from "./types";
+import { PAGE_SIZE, StoreError, type AdminStore, type PublicStore } from "./types";
 
 /**
  * Local preview store (development only — see `localDataMode` in env.ts).
@@ -214,6 +214,14 @@ export function localAdminStore(staffId: string): AdminStore {
 
     async addNote(id, body) {
       await mutate((d) => log(d, { applicationId: id, actorId: staffId, kind: "note", fromValue: null, toValue: null, body }));
+    },
+
+    async deleteApplication(id) {
+      await mutate((d) => {
+        if (!d.applications.some((a) => a.id === id)) throw new StoreError("Application not found");
+        d.applications = d.applications.filter((a) => a.id !== id);
+        d.activity = d.activity.filter((a) => a.applicationId !== id);
+      });
     },
 
     async funnel(days) {

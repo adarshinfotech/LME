@@ -65,6 +65,22 @@ export async function addNoteAction(_: ActionResult, formData: FormData) {
   });
 }
 
+export async function deleteApplicationAction(_: ActionResult, formData: FormData): Promise<ActionResult> {
+  const session = await getSession();
+  if (!session.store || !session.staff) return SESSION_EXPIRED;
+  if (session.staff.role !== "admin") return { ok: false, message: "Only admins can delete applications." };
+  const parsed = z.object({ id }).safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return FAILED;
+  try {
+    await session.store.deleteApplication(parsed.data.id);
+  } catch (e) {
+    console.error("[admin action]", e);
+    return FAILED;
+  }
+  revalidatePath("/admin", "layout");
+  redirect("/admin");
+}
+
 export async function signInAction(_: ActionResult, formData: FormData): Promise<ActionResult> {
   const ip = hashIp(clientIp(await headers()));
   if (!rateLimit(`login:${ip}`, 10, 15 * 60 * 1000).ok) {
